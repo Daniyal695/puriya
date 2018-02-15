@@ -46,7 +46,6 @@ let model = {
   addNewModal: function (name, modelData) {
 
     model = `
-    const log = require('tracer').console({format: "{{message}}  - {{file}}:{{line}}"}).log;\n
     const mongoose = require('mongoose');\n
     const Schema = mongoose.Schema;\n
     const passportLocalMongoose = require('passport-local-mongoose');\n
