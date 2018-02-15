@@ -1,3 +1,6 @@
+function jsUcfirst(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 let model = {
 
   defaultmodel: function () {
@@ -48,7 +51,7 @@ let model = {
     const Schema = mongoose.Schema;\n
     const passportLocalMongoose = require('passport-local-mongoose');\n
     
-    const ${name} = new Schema({\n
+    const ${jsUcfirst(name)} = new Schema({\n
     
     `;
 
@@ -60,7 +63,7 @@ let model = {
 
     model += `});\n
     
-    module.exports = mongoose.model(\`${name.toUpperCase()}\`, ${name.toUpperCase()});\n`;
+    module.exports = mongoose.model(\`${jsUcfirst(name)}\`, ${jsUcfirst(name)});\n`;
 
     return model;
   }
