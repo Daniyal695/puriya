@@ -1,3 +1,6 @@
+function jsUcfirst(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 const db = {
   defaultDb: function () {
     return `const User = require('./user.model.js');
@@ -54,6 +57,37 @@ exports.verifyUser = function (req) {
   });
 };
 `;
+  },
+  makeBasicdb: function (name) {
+    return `const ${name} = require('./${name}.model.js');
+const log = require('@common/log');
+exports.findAll${jsUcfirst(name)}= function () {
+  return new Promise(function (resolve, reject) {
+     ${name}.find({}, function (err, users) {
+      if (err) {
+        log(err);
+        return reject(err);
+      } else {
+        resolve(users);
+      }
+    });
+  });
+};
+`;
+  },
+  makeRoutedb: function (methodName, queryModel, query, name) {
+    return `exports.${methodName} = function () {
+  return new Promise(function (resolve, reject) {
+     ${queryModel}.${query}({},  function (err, data) {
+      if (err) {
+        log(err);
+        return reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });`;
+
   }
 };
 module.exports = db;

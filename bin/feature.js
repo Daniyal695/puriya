@@ -12,6 +12,7 @@ const ctrl = require('../files/feature/ctrl');
 const routes = require('../files/feature/routes');
 const spec = require('../files/feature/spec');
 const readlineSync = require('readline-sync');
+const db = require('../files/feature/db');
 
 function makeDir(dirName) {
 
@@ -75,6 +76,7 @@ program
     makeFile(name, `${name}.model`, model.addNewModal(name, modelData));
     makeFile(name, `${name}.ctrl`, ctrl.makeBasicCtrl(name));
     makeFile(name, `${name}.route`, routes.makeBasic(name));
+    makeFile(name, `${name}.db`, db.makeBasicdb(name));
     fs.readFile('./routes/router.js', 'utf8', function (err, data) {
       if (err) {
         log(`File not found  ${err.path}`);
@@ -89,7 +91,6 @@ program
         if (err) { return log(err); }
       });
     });
-
   })
 
   .parse(process.argv);

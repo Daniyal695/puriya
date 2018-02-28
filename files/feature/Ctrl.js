@@ -1,3 +1,6 @@
+function jsUcfirst(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 let ctrl = ``;
 
 module.exports = ctrl;
@@ -130,17 +133,34 @@ exports.logout = function (req, res) {
   },
   makeBasicCtrl: function (name) {
 
-    ctrl = `const ${name}  = require('./${name}.model.js');
+    ctrl = `const ${name}Model  = require('./${name}.model.js');
     const passport = require('passport');
     const log = require('@common/log');
     const auth = require('@common/auth');
-    const serverCodes = require('@common/codes');
+    const Boom = require('Boom');
     const serverMessages = require('@common/messages');
-                exports.listAll = function (req, res, next) {
-                  ${name}.find({}, function (err, users) {
-                    if (err) throw err;
-                    res.json(users);
-                  });
+    const ${name}data=require('./${name}.db.js')
+                exports.listAll =  async function (req, res, next) {
+                  const params={...req};
+                  let ${name}=null;
+                  ${name}=${name}data.findAll${jsUcfirst(name)}(params);
+                  try{
+                    if (${name}.length === 0) {
+                      return res.json({
+                       message: serverMessages.user.ERROR_NO_USER,
+                       data: []
+                     });
+                    }
+                    return res.json({
+                     message: serverMessages.user.SUCCESS_FOUND,
+                     success: true,
+                     data:${name}
+                    });
+                  }catch(err){
+                    if(err){
+                     throw Boom.badImplementation(\`DB error\`);
+                    }
+                  }
                 };
                 `;
 
@@ -151,23 +171,21 @@ exports.logout = function (req, res) {
   makerouteCtrl: function (name, query, queryModel, methodName) {
 
     ctrl = ` exports.${methodName}= function (req, res, next) {
-                   ${queryModel}.${query}({}, function (err,data ) {
-                     if (err) {
-                        return res.status(500).json({
-                          err: err
-                        });
-                      }
-                      return res.status(200).json({
+                  const params={...req};
+                  let ${name}=null;
+                  ${name}=${name}data.${methodName}(params);
+                  try{
+                        return res.status(200).json({
                         message: '',
                         success: true,
                         data: data 
                       });
-               
-                  });
-                }
-                
-                
-                `;
+                  }catch(err){
+                    if(err){
+                       throw Boom.badImplementation(\`DB error\`);
+                    }
+                  }
+                };`;
 
     return ctrl;
 

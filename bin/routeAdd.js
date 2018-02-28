@@ -7,6 +7,7 @@ const mkdirp = require('mkdirp');
 const program = require('commander');
 const fs = require('fs');
 const ctrl = require('../files/feature/ctrl');
+const db = require('../files/feature/db');
 const routes = require('../files/feature/routes');
 const log = require('tracer').console({ format: "{{message}}  - {{file}}:{{line}}" }).log;
 const readlineSync = require('readline-sync');
@@ -82,10 +83,16 @@ program
       });
 
       const dataCtrl = ctrl.makerouteCtrl(feature, query, queryRoute, methodName);
+      const datadb = db.makeRoutedb(methodName, queryRoute, querys, feature);
 
       fs.appendFile(`./features/${feature}/${feature}.ctrl.js`, dataCtrl, function (err) {
 
         if (err) { return log('Controller not found'); }
+
+      });
+      fs.appendFile(`./features/${feature}/${feature}.db.js`, datadb, function (err) {
+
+        if (err) { return log('DB access file not found'); }
 
       });
 
