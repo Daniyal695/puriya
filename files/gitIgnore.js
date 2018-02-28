@@ -3,7 +3,7 @@ let ignore = '';
 const makeGitIgnore = function () {
 
   ignore = `.idea/
-             node_modules/`;
+node_modules/`;
 
   return ignore;
 };

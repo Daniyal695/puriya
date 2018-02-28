@@ -35,6 +35,10 @@ const route = require('../files/route/route');
 const user = require('../bin/usermodel');
 const congfigspec = require('../files/spec/config');
 const dropdb = require('../files/spec/dropdb');
+const uservalidator = require('../files/feature/validator');
+const validator = require('../files/common/validator');
+const type = require('../files/feature/type');
+const db = require('../files/feature/db');
 let name; function makeDir(dirName) {
 
   mkdirp(`./${name}/${dirName}`, function (err) {
@@ -103,6 +107,7 @@ program
         makeFile('common', 'log.js', logs());
         makeFile('common', 'codes.js', codes());
         makeFile('common', 'messages.js', messages());
+        makeFile('common', 'validator.js', validator());
         makeFile('', '.gitIgnore', gitIgnore());
         makeFile('', '.eslintignore', eslintignore());
         makeFile('', '.eslintrc.json', esLint());
@@ -116,6 +121,9 @@ program
         user.makefile(name, `users`, "user.route", routes.defaultroute());
         user.makefile(name, `users`, "user.messages", usermessages.defaultusermessage());
         user.makefile(name, `users`, "user.spec", userspec.defaultspec());
+        user.makefile(name, `users`, "user.type", type.defaultType());
+        user.makefile(name, `users`, "user.validator", uservalidator.defaultValidate());
+        user.makefile(name, `users`, "user.db", db.defaultDb());
       }
     });
   })

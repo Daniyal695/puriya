@@ -47,7 +47,8 @@ const makePackageJSON = function (name) {
         "serve-favicon": "~2.4.5",
         "tracer": "^0.8.3",
         "winston": "^2.4.0",
-        "winston-papertrail": "^1.0.5"
+        "winston-papertrail": "^1.0.5",
+        "joi-objectid": "^2.0.0"
       },
       "pre-commit": [
         "lint"
