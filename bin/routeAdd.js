@@ -83,7 +83,7 @@ program
       });
 
       const dataCtrl = ctrl.makerouteCtrl(feature, query, queryRoute, methodName);
-      const datadb = db.makeRoutedb(methodName, queryRoute, querys, feature);
+      const datadb = db.makeRoutedb(methodName, queryRoute, query, feature);
 
       fs.appendFile(`./features/${feature}/${feature}.ctrl.js`, dataCtrl, function (err) {
 

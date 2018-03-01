@@ -62,38 +62,13 @@ const makeVerify = function () {
     };
     
     exports.admin = function (req, res, next) {
-      // check header or url parameters or post parameters for token
-      const token = req.body.token || req.query.token || req.headers[\`x-access-token\`];
-    
-      // decode token
-      if (token) {
-        // verifies secret and checks exp
-        jwt.verify(token, config.secretKey, function (err, decoded) {
-          if (err) {
-            const error = new Error(\`You are not authenticated!\`);
-            error.status = 401;
-            return next(err);
-          } else {
-            // if everything is good, save to request for use in other routes
-            req._user = decoded;
-    
-            // check if the user has admin flag true
-            if (req._user.admin) {
-              next();
-            } else {
-              res.status(403).json({
-                'message': \`You are not authorized to perform this operation!\`
-              });
-            }
-          }
-        });
-      } else {
-        // if there is no token
-        // return an error
-        const err = new Error(\`No token provided!\`);
-        err.status = 403;
-        return next(err);
-      }
+      if (req._user.admin) {
+    next();
+  } else {
+    res.status(403).json({
+      'message': \`You are not authorized to perform this operation!\`
+    });
+  }
     
     };`;
 

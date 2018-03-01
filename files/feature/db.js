@@ -86,7 +86,8 @@ exports.findAll${jsUcfirst(name)}= function () {
         resolve(data);
       }
     });
-  });`;
+  })
+  };`;
 
   }
 };
