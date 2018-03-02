@@ -21,7 +21,7 @@ program
 
       if (!fs.existsSync(`./features/${feature}`)) {
 
-        log(`Please add the feature first of ${feature} by puriya feature`);
+        log(`Please add the feature first of ${feature} by puriya feature ${feature}`);
         process.exit(1);
       }
       let result = spec.addimports();

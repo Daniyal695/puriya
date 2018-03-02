@@ -5,7 +5,6 @@ const makeRoute = {
   defaultspec: function () {
     const userspec = `const config = require('../../spec/config');
     const frisby = require('frisby');
-    const Joi = frisby.Joi;
     let token;
     
     describe(\`User register :\`, () => {
@@ -50,7 +49,7 @@ const makeRoute = {
           .post(\`\${config.domain}/user/login\`, {
             password: \`12345\`
           })
-          .expect(\`status\`, 401)
+          .expect(\`status\`, 500)
           .done(done);
     
       });
@@ -60,7 +59,7 @@ const makeRoute = {
           .post(\`\${config.domain}/user/login\`, {
             username: \`dany600\`
           })
-          .expect(\`status\`, 401)
+          .expect(\`status\`, 500)
           .done(done);
     
       });
@@ -69,7 +68,11 @@ const makeRoute = {
       it(\`it should logout the user\`, done => {
         frisby
           .get(\`\${config.domain}/user/logout\`, {
-    
+            headers: {
+          'x-access-token': token,
+          origin: config.domain,
+          'Content-Type': 'application/json',
+        }
           })
           .expect(\`status\`, 200)
           .done(done);
@@ -88,8 +91,7 @@ const makeRoute = {
           })
           .expect(\`status\`, 403)
           .expect(\`json\`, {
-            message: \`No token provided!\`,
-            success: false
+             message: \`You are not authorized to perform this operation!\`
           })
           .done(done);
     
